@@ -1,0 +1,21 @@
+type Query {
+  users: [User]
+  user(id: ID!): User
+}
+
+type Mutation {
+  createUser(info: InputUser): User
+  deleteUser(ids: [ID]): User
+}
+
+type User {
+  _id: ID
+  username: String
+  password: String
+  name: String
+}
+
+input InputUser {
+  username: String
+  password: String
+}

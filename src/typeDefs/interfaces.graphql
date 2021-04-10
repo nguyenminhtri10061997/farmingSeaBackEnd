@@ -1,0 +1,4 @@
+directive @isAuthentication on FIELD_DEFINITION
+
+scalar infoScalar
+scalar resScalar
