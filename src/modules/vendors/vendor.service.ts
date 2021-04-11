@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Company as CompanyGraphql } from '../../graphql.schema';
-import { Company, CompanyDocument } from 'src/schemas/company.schema';
+import { Vendor as VendorGraphql } from '../../graphql.schema';
+import { Vendor, VendorDocument } from 'src/schemas/vendor.schema';
 import { Model } from 'mongoose';
 import { uuid } from 'uuidv4';
 import * as dayjs from 'dayjs'
@@ -9,21 +9,21 @@ import { ApolloError } from 'apollo-server-errors';
 import { toUnsignedNameName } from 'src/commons/commonFunc';
 
 @Injectable()
-export class CompanyService {
-  constructor(@InjectModel(Company.name) private companyModel: Model<CompanyDocument>) {}
-  async findAll(): Promise<CompanyGraphql[]> {
-    return this.companyModel.find({
+export class VendorService {
+  constructor(@InjectModel(Vendor.name) private vendorModel: Model<VendorDocument>) {}
+  async findAll(): Promise<VendorGraphql[]> {
+    return this.vendorModel.find({
       isActive: true
     }).exec();
   }
-  async findOneById(id): Promise<CompanyGraphql> {
-    return this.companyModel.findOne({
+  async findOneById(id): Promise<VendorGraphql> {
+    return this.vendorModel.findOne({
       _id: id
     }).exec();
   }
   
-  async createOne({ info }, { currentUser }): Promise<CompanyGraphql> {
-    const dataExist = await this.companyModel.findOne({
+  async createOne({ info }, { currentUser }): Promise<VendorGraphql> {
+    const dataExist = await this.vendorModel.findOne({
       code: info.code,
       isActive: true
     }).exec()
@@ -41,14 +41,14 @@ export class CompanyService {
         username: currentUser.username
       }
     }
-    await this.companyModel.create(newData);
+    await this.vendorModel.create(newData);
     return newData
   }
   
-  async updateOne(args, { currentUser }): Promise<CompanyGraphql> {
+  async updateOne(args, { currentUser }): Promise<VendorGraphql> {
     const { id, info } = args
     if (info.code !== info.oldCode) {
-      const dataExist = await this.companyModel.findOne({
+      const dataExist = await this.vendorModel.findOne({
         code: info.code,
         isActive: true
       }).exec()
@@ -56,7 +56,7 @@ export class CompanyService {
         throw new ApolloError('code exist')
       }
     }
-    const dataUpdate = await this.companyModel.findOneAndUpdate({
+    const dataUpdate = await this.vendorModel.findOneAndUpdate({
       _id: id
     }, {
       $set: {
@@ -73,8 +73,8 @@ export class CompanyService {
   }
   
   async deletes({ ids }, { currentUser }): Promise<boolean> {
-    await this.companyModel.updateMany({
-      _id: { $in: ids.filter(i => i !== 'default') }
+    await this.vendorModel.updateMany({
+      _id: { $in: ids }
     }, {
       $set: {
         isActive: false,

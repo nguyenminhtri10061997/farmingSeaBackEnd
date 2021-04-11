@@ -1,46 +1,46 @@
 import { Args, Mutation, Query, Resolver, Context } from '@nestjs/graphql';
 import { User as UserGraphql } from '../../graphql.schema';
-import { CompanyService } from './company.service';
+import { VendorService } from './vendor.service';
 
 @Resolver()
-export class CompanyResolver {
-  constructor(private readonly companyService: CompanyService) {}
+export class VendorResolver {
+  constructor(private readonly vendorService: VendorService) {}
 
   @Query()
-  async conpanies(
+  async vendors(
   ): Promise<UserGraphql[]> {
-    return this.companyService.findAll();
+    return this.vendorService.findAll();
   }
 
   @Query()
-  async company(
+  async vendor(
     @Args() args
   ): Promise<UserGraphql> {
     const { id } = args
-    return this.companyService.findOneById(id);
+    return this.vendorService.findOneById(id);
   }
 
   @Mutation()
-  async createCompany(
+  async createVendor(
     @Context() context,
     @Args() args
   ): Promise<UserGraphql> {
-    return this.companyService.createOne(args, context);
+    return this.vendorService.createOne(args, context);
   }
 
   @Mutation()
-  async updateCompany(
+  async updateVendor(
     @Context() context,
     @Args() args
   ): Promise<UserGraphql> {
-    return this.companyService.updateOne(args, context);
+    return this.vendorService.updateOne(args, context);
   }
 
   @Mutation()
-  async deleteCompanies(
+  async deleteVendors(
     @Context() context,
     @Args() args
   ): Promise<boolean> {
-    return this.companyService.deletes(args, context);
+    return this.vendorService.deletes(args, context);
   }
 }

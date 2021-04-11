@@ -1,6 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UsersService } from '../users/users.service';
 import { JWTtoken } from 'src/configs/jwt'
+import { ApolloError } from 'apollo-server-errors';
 
 @Resolver()
 export class LoginsResolver {
@@ -13,10 +14,10 @@ export class LoginsResolver {
     const { info: { username, password }} = args
     const dataUser = await this.UsersService.findOneByUsername(username)
     if (!dataUser) {
-      throw '!dataUser'
+      return new ApolloError('!dataUser')
     }
     if (dataUser.password !== password) {
-      throw '!password'
+      return new ApolloError('!password')
     }
     return {
       token: JWTtoken.encode({

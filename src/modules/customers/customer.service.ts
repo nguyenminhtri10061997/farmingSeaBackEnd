@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Company as CompanyGraphql } from '../../graphql.schema';
-import { Company, CompanyDocument } from 'src/schemas/company.schema';
+import { Customer as CustomerGraphql } from '../../graphql.schema';
+import { Customer, CustomerDocument } from 'src/schemas/customer.schema';
 import { Model } from 'mongoose';
 import { uuid } from 'uuidv4';
 import * as dayjs from 'dayjs'
@@ -9,21 +9,21 @@ import { ApolloError } from 'apollo-server-errors';
 import { toUnsignedNameName } from 'src/commons/commonFunc';
 
 @Injectable()
-export class CompanyService {
-  constructor(@InjectModel(Company.name) private companyModel: Model<CompanyDocument>) {}
-  async findAll(): Promise<CompanyGraphql[]> {
-    return this.companyModel.find({
+export class CustomerService {
+  constructor(@InjectModel(Customer.name) private customerModel: Model<CustomerDocument>) {}
+  async findAll(): Promise<CustomerGraphql[]> {
+    return this.customerModel.find({
       isActive: true
     }).exec();
   }
-  async findOneById(id): Promise<CompanyGraphql> {
-    return this.companyModel.findOne({
+  async findOneById(id): Promise<CustomerGraphql> {
+    return this.customerModel.findOne({
       _id: id
     }).exec();
   }
   
-  async createOne({ info }, { currentUser }): Promise<CompanyGraphql> {
-    const dataExist = await this.companyModel.findOne({
+  async createOne({ info }, { currentUser }): Promise<CustomerGraphql> {
+    const dataExist = await this.customerModel.findOne({
       code: info.code,
       isActive: true
     }).exec()
@@ -33,7 +33,7 @@ export class CompanyService {
     const newData = {
       _id: uuid(),
       ...info,
-      unsignName: toUnsignedNameName(info.name),
+      unsignFullName: toUnsignedNameName(info.fullName),
       isActive: true,
       createdAt: dayjs().valueOf(),
       createdBy: {
@@ -41,14 +41,14 @@ export class CompanyService {
         username: currentUser.username
       }
     }
-    await this.companyModel.create(newData);
+    await this.customerModel.create(newData);
     return newData
   }
   
-  async updateOne(args, { currentUser }): Promise<CompanyGraphql> {
+  async updateOne(args, { currentUser }): Promise<CustomerGraphql> {
     const { id, info } = args
     if (info.code !== info.oldCode) {
-      const dataExist = await this.companyModel.findOne({
+      const dataExist = await this.customerModel.findOne({
         code: info.code,
         isActive: true
       }).exec()
@@ -56,12 +56,12 @@ export class CompanyService {
         throw new ApolloError('code exist')
       }
     }
-    const dataUpdate = await this.companyModel.findOneAndUpdate({
+    const dataUpdate = await this.customerModel.findOneAndUpdate({
       _id: id
     }, {
       $set: {
         ...info,
-        unsignName: toUnsignedNameName(info.name),
+        unsignFullName: toUnsignedNameName(info.fullName),
         updatedAt: dayjs().valueOf(),
         updatedBy: {
           _id: currentUser._id,
@@ -73,7 +73,7 @@ export class CompanyService {
   }
   
   async deletes({ ids }, { currentUser }): Promise<boolean> {
-    await this.companyModel.updateMany({
+    await this.customerModel.updateMany({
       _id: { $in: ids.filter(i => i !== 'default') }
     }, {
       $set: {

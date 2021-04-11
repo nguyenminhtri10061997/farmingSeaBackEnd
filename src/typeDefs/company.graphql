@@ -13,6 +13,7 @@ type Company {
   _id: ID
   code: String
   name: String
+  unsignName: String
   address: String
   mobile: String
 }

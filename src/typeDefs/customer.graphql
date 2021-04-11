@@ -1,0 +1,19 @@
+type Query {
+  customers: [Customer]
+  customer(id: ID!): Customer
+}
+
+type Mutation {
+  createCustomer(info: infoScalar): Customer
+  updateCustomer(id: ID!, info: infoScalar): Customer
+  deleteCustomers(ids: [ID]): Boolean
+}
+
+type Customer {
+  _id: ID
+  code: String
+  fullName: String
+  unsignFullName: String
+  address: String
+  mobile: String
+}

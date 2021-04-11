@@ -1,15 +1,16 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type CompanyDocument = Company & Document;
+export type StockModelDocument = StockModel & Document;
 
 @Schema()
-export class Company {
+export class StockModel {
   @Prop()
   _id: string;
 
   @Prop()
   code: string;
+  
 
   @Prop()
   name: string;
@@ -18,13 +19,14 @@ export class Company {
   unsignName: string
 
   @Prop()
-  address: string;
-  
-  @Prop()
-  mobile: string;
-
-  @Prop()
   isActive: Boolean;
+
+  @Prop(raw({
+    unit: { type: [String] },
+    factor: { type: [Number] },
+    buyPrice: { type: Number }
+  }))
+  detail: Record<string, any>;
 
   @Prop()
   createdAt: number;
@@ -45,4 +47,4 @@ export class Company {
   updatedBy: Record<string, any>;
 }
 
-export const CompanySchema = SchemaFactory.createForClass(Company);
+export const StockModelSchema = SchemaFactory.createForClass(StockModel);

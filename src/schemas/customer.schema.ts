@@ -1,10 +1,10 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type CompanyDocument = Company & Document;
+export type CustomerDocument = Customer & Document;
 
 @Schema()
-export class Company {
+export class Customer {
   @Prop()
   _id: string;
 
@@ -12,10 +12,10 @@ export class Company {
   code: string;
 
   @Prop()
-  name: string;
+  fullName: string;
 
   @Prop()
-  unsignName: string
+  unsignFullName: string
 
   @Prop()
   address: string;
@@ -45,4 +45,4 @@ export class Company {
   updatedBy: Record<string, any>;
 }
 
-export const CompanySchema = SchemaFactory.createForClass(Company);
+export const CustomerSchema = SchemaFactory.createForClass(Customer);

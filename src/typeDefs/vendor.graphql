@@ -1,0 +1,19 @@
+type Query {
+  vendors: [Vendor]
+  vendor(id: ID!): Vendor
+}
+
+type Mutation {
+  createVendor(info: infoScalar): Vendor
+  updateVendor(id: ID!, info: infoScalar): Vendor
+  deleteVendors(ids: [ID]): Boolean
+}
+
+type Vendor {
+  _id: ID
+  code: String
+  name: String
+  unsignName: String
+  address: String
+  mobile: String
+}

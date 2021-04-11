@@ -1,0 +1,24 @@
+type Query {
+  stockModels: [StockModel]
+  stockModel(id: ID!): StockModel
+}
+
+type Mutation {
+  createStockModel(info: infoScalar): StockModel
+  updateStockModel(id: ID!, info: infoScalar): StockModel
+  deleteStockModels(ids: [ID]): Boolean
+}
+
+type StockModel {
+  _id: ID
+  code: String
+  name: String
+  unsignName: String
+  detail: DetailStockModel
+}
+
+type DetailStockModel {
+  unit: [String]
+  factor: [Float]
+  buyPrice: Float
+}
