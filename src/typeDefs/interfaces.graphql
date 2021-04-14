@@ -2,3 +2,12 @@ directive @isAuthentication on FIELD_DEFINITION
 
 scalar infoScalar
 scalar resScalar
+
+enum EnumTypeDocument {
+  IMPORT
+  SALE
+}
+enum EnumStateDocument {
+  RECEIVED
+  COMPLETED
+}

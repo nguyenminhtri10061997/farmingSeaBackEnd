@@ -9,7 +9,7 @@ export const toAcronym = (str = '') => {
 }
 
 export const toUnsignedNameName = (str = '') => {
-  let resStr = str.toLowerCase()
+  let resStr = str.toLowerCase().trim()
   resStr = resStr.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/gi, 'a')
   resStr = resStr.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/gi, 'e')
   resStr = resStr.replace(/ì|í|ị|ỉ|ĩ/gi, 'i')

@@ -7,6 +7,16 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum EnumTypeDocument {
+    IMPORT = "IMPORT",
+    SALE = "SALE"
+}
+
+export enum EnumStateDocument {
+    RECEIVED = "RECEIVED",
+    COMPLETED = "COMPLETED"
+}
+
 export class CreateCatInput {
     name?: string;
     age?: number;
@@ -30,6 +40,12 @@ export abstract class IQuery {
 
     abstract customer(id: string): Customer | Promise<Customer>;
 
+    abstract searchCustomers(searchString: string, limit?: number, idDefault?: string): Customer[] | Promise<Customer[]>;
+
+    abstract documents(): Document[] | Promise<Document[]>;
+
+    abstract document(id: string): Document | Promise<Document>;
+
     abstract login(info?: infoScalar): resScalar | Promise<resScalar>;
 
     abstract getMe(): User | Promise<User>;
@@ -45,6 +61,8 @@ export abstract class IQuery {
     abstract vendors(): Vendor[] | Promise<Vendor[]>;
 
     abstract vendor(id: string): Vendor | Promise<Vendor>;
+
+    abstract searchVendors(searchString: string, limit?: number, idDefault?: string): Vendor[] | Promise<Vendor[]>;
 }
 
 export abstract class IMutation {
@@ -61,6 +79,16 @@ export abstract class IMutation {
     abstract updateCustomer(id: string, info?: infoScalar): Customer | Promise<Customer>;
 
     abstract deleteCustomers(ids?: string[]): boolean | Promise<boolean>;
+
+    abstract createDocument(info?: infoScalar): Document | Promise<Document>;
+
+    abstract updateDocument(id: string, info?: infoScalar): Document | Promise<Document>;
+
+    abstract verifyCompleteDocument(id: string): boolean | Promise<boolean>;
+
+    abstract canceledCompleteDocument(id: string): boolean | Promise<boolean>;
+
+    abstract canceledDocument(id: string): boolean | Promise<boolean>;
 
     abstract createStockModel(info?: infoScalar): StockModel | Promise<StockModel>;
 
@@ -97,7 +125,7 @@ export class Company {
     _id?: string;
     code?: string;
     name?: string;
-    unsignName?: string;
+    unsignedName?: string;
     address?: string;
     mobile?: string;
 }
@@ -106,16 +134,27 @@ export class Customer {
     _id?: string;
     code?: string;
     fullName?: string;
-    unsignFullName?: string;
+    unsignedFullName?: string;
     address?: string;
     mobile?: string;
+}
+
+export class Document {
+    _id?: string;
+    idSrcVendor?: string;
+    idDesCompany?: string;
+    idSrcCompany?: string;
+    idDesCustomer?: string;
+    code?: string;
+    type?: EnumTypeDocument;
+    state?: EnumStateDocument;
 }
 
 export class StockModel {
     _id?: string;
     code?: string;
     name?: string;
-    unsignName?: string;
+    unsignedName?: string;
     detail?: DetailStockModel;
 }
 
@@ -136,7 +175,7 @@ export class Vendor {
     _id?: string;
     code?: string;
     name?: string;
-    unsignName?: string;
+    unsignedName?: string;
     address?: string;
     mobile?: string;
 }

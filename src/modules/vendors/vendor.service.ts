@@ -87,4 +87,40 @@ export class VendorService {
     });
     return true
   }
+  
+  async search({
+    searchString,
+    limit,
+    idDefault
+  }): Promise<VendorGraphql[]> {
+    const objOptions: any = {}
+    if (limit) {
+      objOptions.take = limit
+    }
+    const res = await this.vendorModel.find({
+      isActive: true,
+      $or: [
+        {
+          code: { $regex: searchString, $options: 'siu' }
+        },
+        {
+          name: { $regex: searchString, $options: 'siu' }
+        },
+        {
+          unsignedFullName: { $regex: searchString, $options: 'siu' }
+        },
+      ]
+    })
+    if (idDefault && !res.find(item => item._id === idDefault)) {
+      const dataDefault = await this.vendorModel.findOne({
+        where: {
+          _id: idDefault
+        }
+      })
+      if (dataDefault) {
+        res.push(dataDefault)
+      }
+    }
+    return res
+  }
 }

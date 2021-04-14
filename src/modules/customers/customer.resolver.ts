@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver, Context } from '@nestjs/graphql';
-import { User as UserGraphql } from '../../graphql.schema';
+import { Customer as CustomerGraphql } from '../../graphql.schema';
 import { CustomerService } from './customer.service';
 
 @Resolver()
@@ -8,14 +8,14 @@ export class CustomerResolver {
 
   @Query()
   async customers(
-  ): Promise<UserGraphql[]> {
+  ): Promise<CustomerGraphql[]> {
     return this.customerService.findAll();
   }
 
   @Query()
   async customer(
     @Args() args
-  ): Promise<UserGraphql> {
+  ): Promise<CustomerGraphql> {
     const { id } = args
     return this.customerService.findOneById(id);
   }
@@ -24,7 +24,7 @@ export class CustomerResolver {
   async createCustomer(
     @Context() context,
     @Args() args
-  ): Promise<UserGraphql> {
+  ): Promise<CustomerGraphql> {
     return this.customerService.createOne(args, context);
   }
 
@@ -32,7 +32,7 @@ export class CustomerResolver {
   async updateCustomer(
     @Context() context,
     @Args() args
-  ): Promise<UserGraphql> {
+  ): Promise<CustomerGraphql> {
     return this.customerService.updateOne(args, context);
   }
 
@@ -42,5 +42,12 @@ export class CustomerResolver {
     @Args() args
   ): Promise<boolean> {
     return this.customerService.deletes(args, context);
+  }
+
+  @Query()
+  async searchCustomers(
+    @Args() args
+  ): Promise<CustomerGraphql[]> {
+    return this.customerService.searchCustomers(args);
   }
 }

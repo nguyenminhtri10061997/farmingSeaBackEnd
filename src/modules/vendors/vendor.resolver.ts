@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver, Context } from '@nestjs/graphql';
-import { User as UserGraphql } from '../../graphql.schema';
+import { Vendor as VendorGraphql } from '../../graphql.schema';
 import { VendorService } from './vendor.service';
 
 @Resolver()
@@ -8,14 +8,14 @@ export class VendorResolver {
 
   @Query()
   async vendors(
-  ): Promise<UserGraphql[]> {
+  ): Promise<VendorGraphql[]> {
     return this.vendorService.findAll();
   }
 
   @Query()
   async vendor(
     @Args() args
-  ): Promise<UserGraphql> {
+  ): Promise<VendorGraphql> {
     const { id } = args
     return this.vendorService.findOneById(id);
   }
@@ -24,7 +24,7 @@ export class VendorResolver {
   async createVendor(
     @Context() context,
     @Args() args
-  ): Promise<UserGraphql> {
+  ): Promise<VendorGraphql> {
     return this.vendorService.createOne(args, context);
   }
 
@@ -32,7 +32,7 @@ export class VendorResolver {
   async updateVendor(
     @Context() context,
     @Args() args
-  ): Promise<UserGraphql> {
+  ): Promise<VendorGraphql> {
     return this.vendorService.updateOne(args, context);
   }
 
@@ -42,5 +42,12 @@ export class VendorResolver {
     @Args() args
   ): Promise<boolean> {
     return this.vendorService.deletes(args, context);
+  }
+
+  @Query()
+  async searchVendors(
+    @Args() args
+  ): Promise<VendorGraphql[]> {
+    return this.vendorService.search(args);
   }
 }

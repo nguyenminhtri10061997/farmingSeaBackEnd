@@ -13,7 +13,7 @@ type StockModel {
   _id: ID
   code: String
   name: String
-  unsignName: String
+  unsignedName: String
   detail: DetailStockModel
 }
 

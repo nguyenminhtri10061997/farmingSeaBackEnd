@@ -87,4 +87,40 @@ export class CustomerService {
     });
     return true
   }
+  
+  async searchCustomers({
+    searchString,
+    limit,
+    idDefault
+  }): Promise<CustomerGraphql[]> {
+    const objOptions: any = {}
+    if (limit) {
+      objOptions.take = limit
+    }
+    const res = await this.customerModel.find({
+      isActive: true,
+      $or: [
+        {
+          code: { $regex: searchString, $options: 'siu' }
+        },
+        {
+          name: { $regex: searchString, $options: 'siu' }
+        },
+        {
+          unsignedFullName: { $regex: searchString, $options: 'siu' }
+        },
+      ]
+    })
+    if (idDefault && !res.find(item => item._id === idDefault)) {
+      const dataDefault = await this.customerModel.findOne({
+        where: {
+          _id: idDefault
+        }
+      })
+      if (dataDefault) {
+        res.push(dataDefault)
+      }
+    }
+    return res
+  }
 }

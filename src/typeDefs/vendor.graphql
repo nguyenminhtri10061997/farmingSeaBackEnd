@@ -1,6 +1,7 @@
 type Query {
   vendors: [Vendor]
   vendor(id: ID!): Vendor
+  searchVendors(searchString: String!, limit: Int, idDefault: ID): [Vendor]
 }
 
 type Mutation {
@@ -13,7 +14,7 @@ type Vendor {
   _id: ID
   code: String
   name: String
-  unsignName: String
+  unsignedName: String
   address: String
   mobile: String
 }

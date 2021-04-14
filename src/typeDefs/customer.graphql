@@ -1,6 +1,7 @@
 type Query {
   customers: [Customer]
   customer(id: ID!): Customer
+  searchCustomers(searchString: String!, limit: Int, idDefault: ID): [Customer]
 }
 
 type Mutation {
@@ -13,7 +14,7 @@ type Customer {
   _id: ID
   code: String
   fullName: String
-  unsignFullName: String
+  unsignedFullName: String
   address: String
   mobile: String
 }

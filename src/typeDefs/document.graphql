@@ -1,0 +1,23 @@
+type Query {
+  documents: [Document]
+  document(id: ID!): Document
+}
+
+type Mutation {
+  createDocument(info: infoScalar): Document
+  updateDocument(id: ID!, info: infoScalar): Document
+  verifyCompleteDocument(id: ID!): Boolean
+  canceledCompleteDocument(id: ID!): Boolean
+  canceledDocument(id: ID!): Boolean
+}
+
+type Document {
+  _id: ID
+  idSrcVendor: ID
+  idDesCompany: ID
+  idSrcCompany: ID
+  idDesCustomer: ID
+  code: String
+  type: EnumTypeDocument
+  state: EnumStateDocument
+}
