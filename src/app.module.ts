@@ -13,19 +13,12 @@ import { CompanyModule } from './modules/companies/company.module';
 import { VendorModule } from './modules/vendors/vendor.module';
 import { CustomerModule } from './modules/customers/customer.module';
 import { StockModelModule } from './modules/stockModels/stockModel.module';
+import { DocumentModule } from './modules/documents/document.module';
 
 const connection = mongoose.createConnection('mongodb://localhost:27017/farmingSea');
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/farmingSea'),
-    UsersModule,
-    CatsModule,
-    LoginsModule,
-    MeModule,
-    CompanyModule,
-    VendorModule,
-    CustomerModule,
-    StockModelModule,
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       // installSubscriptionHandlers: true,
@@ -47,7 +40,16 @@ const connection = mongoose.createConnection('mongodb://localhost:27017/farmingS
           return { currentUser };
         }
       },
-    })
+    }),
+    UsersModule,
+    CatsModule,
+    LoginsModule,
+    MeModule,
+    CompanyModule,
+    VendorModule,
+    CustomerModule,
+    StockModelModule,
+    DocumentModule,
   ],
 })
 export class AppModule {}

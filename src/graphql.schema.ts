@@ -14,7 +14,8 @@ export enum EnumTypeDocument {
 
 export enum EnumStateDocument {
     RECEIVED = "RECEIVED",
-    COMPLETED = "COMPLETED"
+    COMPLETED = "COMPLETED",
+    CANCELED = "CANCELED"
 }
 
 export class CreateCatInput {
@@ -42,7 +43,7 @@ export abstract class IQuery {
 
     abstract searchCustomers(searchString: string, limit?: number, idDefault?: string): Customer[] | Promise<Customer[]>;
 
-    abstract documents(): Document[] | Promise<Document[]>;
+    abstract documents(type?: EnumTypeDocument, startDate?: number, endDate?: number, idDesCompany?: string): Document[] | Promise<Document[]>;
 
     abstract document(id: string): Document | Promise<Document>;
 
@@ -148,6 +149,7 @@ export class Document {
     code?: string;
     type?: EnumTypeDocument;
     state?: EnumStateDocument;
+    srcVendor?: Vendor;
 }
 
 export class StockModel {

@@ -8,7 +8,7 @@ export const toAcronym = (str = '') => {
   return res.split(' ').map(i => i[0]).join('')
 }
 
-export const toUnsignedNameName = (str = '') => {
+export const toUnsignedName = (str = '') => {
   let resStr = str.toLowerCase().trim()
   resStr = resStr.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/gi, 'a')
   resStr = resStr.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/gi, 'e')
@@ -98,4 +98,16 @@ export const listToTree = (list) => {
 
 export const mathRound500 = number => {
   return number % 500 !== 0 ? (Math.floor(number / 500) + 1) * 500 : number
+}
+
+
+export const dotNotate = (obj, target = null, prefix = '') => {
+  target = target || {}
+  prefix = prefix || ""
+
+  Object.keys(obj).forEach(key => {
+    if (!(typeof obj[key] === 'object' && obj[key] && !Array.isArray(obj[key]))) return (target[prefix + key] = obj[key])
+    dotNotate(obj[key], target, prefix + key + '.')
+  })
+  return target
 }

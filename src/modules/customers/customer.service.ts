@@ -3,10 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Customer as CustomerGraphql } from '../../graphql.schema';
 import { Customer, CustomerDocument } from 'src/schemas/customer.schema';
 import { Model } from 'mongoose';
-import { uuid } from 'uuidv4';
-import * as dayjs from 'dayjs'
+import { v4 } from 'uuid';
+import moment from 'moment';
 import { ApolloError } from 'apollo-server-errors';
-import { toUnsignedNameName } from 'src/commons/commonFunc';
+import { toUnsignedName } from 'src/commons/commonFunc';
 
 @Injectable()
 export class CustomerService {
@@ -31,11 +31,11 @@ export class CustomerService {
       throw new ApolloError('code exist')
     }
     const newData = {
-      _id: uuid(),
+      _id: v4(),
       ...info,
-      unsignFullName: toUnsignedNameName(info.fullName),
+      unsignFullName: toUnsignedName(info.fullName),
       isActive: true,
-      createdAt: dayjs().valueOf(),
+      createdAt: moment().valueOf(),
       createdBy: {
         _id: currentUser._id,
         username: currentUser.username
@@ -61,8 +61,8 @@ export class CustomerService {
     }, {
       $set: {
         ...info,
-        unsignFullName: toUnsignedNameName(info.fullName),
-        updatedAt: dayjs().valueOf(),
+        unsignFullName: toUnsignedName(info.fullName),
+        updatedAt: moment().valueOf(),
         updatedBy: {
           _id: currentUser._id,
           username: currentUser.username
@@ -78,7 +78,7 @@ export class CustomerService {
     }, {
       $set: {
         isActive: false,
-        updatedAt: dayjs().valueOf(),
+        updatedAt: moment().valueOf(),
         updatedBy: {
           _id: currentUser._id,
           username: currentUser.username

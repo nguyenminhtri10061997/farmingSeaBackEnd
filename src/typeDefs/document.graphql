@@ -1,5 +1,5 @@
 type Query {
-  documents: [Document]
+  documents(type: EnumTypeDocument, startDate: Float, endDate: Float, idDesCompany: ID): [Document]
   document(id: ID!): Document
 }
 
@@ -20,4 +20,6 @@ type Document {
   code: String
   type: EnumTypeDocument
   state: EnumStateDocument
+
+  srcVendor: Vendor
 }

@@ -29,6 +29,9 @@ export class Company {
   @Prop()
   createdAt: number;
 
+  @Prop()
+  indexImportDocument: number;
+
   @Prop(raw({
     _id: { type: String },
     username: { type: String }
