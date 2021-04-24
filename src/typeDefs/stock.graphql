@@ -1,0 +1,15 @@
+type Query {
+  stocks(idSourceCompany: ID): [Stock]
+  stock(id: ID!): Stock
+}
+
+type Stock {
+  _id: ID
+  idStockModel: ID
+  idCompany: ID
+  quantity: [Float]
+  count: Int
+
+  ##
+  stockModel: StockModel
+}

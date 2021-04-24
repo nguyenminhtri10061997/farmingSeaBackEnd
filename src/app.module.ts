@@ -10,10 +10,11 @@ import { UsersModule } from './modules/users/users.module';
 import { LoginsModule } from './modules/logins/login.module';
 import { MeModule } from './modules/mes/me.module';
 import { CompanyModule } from './modules/companies/company.module';
-import { VendorModule } from './modules/vendors/vendor.module';
+import { StockModule } from './modules/stocks/stock.module';
 import { CustomerModule } from './modules/customers/customer.module';
 import { StockModelModule } from './modules/stockModels/stockModel.module';
 import { DocumentModule } from './modules/documents/document.module';
+import { STransactionModule } from './modules/sTransactions/sTransaction.module';
 
 const connection = mongoose.createConnection('mongodb://localhost:27017/farmingSea');
 @Module({
@@ -46,10 +47,11 @@ const connection = mongoose.createConnection('mongodb://localhost:27017/farmingS
     LoginsModule,
     MeModule,
     CompanyModule,
-    VendorModule,
     CustomerModule,
     StockModelModule,
     DocumentModule,
+    STransactionModule,
+    StockModule,
   ],
 })
 export class AppModule {}

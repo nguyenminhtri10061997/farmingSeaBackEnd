@@ -12,3 +12,8 @@ enum EnumStateDocument {
   COMPLETED
   CANCELED
 }
+
+type Account {
+  _id: ID
+  username: String
+}

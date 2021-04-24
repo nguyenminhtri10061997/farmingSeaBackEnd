@@ -1,14 +1,15 @@
 type Query {
-  documents(type: EnumTypeDocument, startDate: Float, endDate: Float, idDesCompany: ID): [Document]
+  documents(type: EnumTypeDocument, startDate: Float, endDate: Float, idSourceCompany: ID, state: EnumStateDocument): [Document]
   document(id: ID!): Document
 }
 
 type Mutation {
   createDocument(info: infoScalar): Document
-  updateDocument(id: ID!, info: infoScalar): Document
+  createDocumentSale(info: infoScalar): Document
   verifyCompleteDocument(id: ID!): Boolean
-  canceledCompleteDocument(id: ID!): Boolean
   canceledDocument(id: ID!): Boolean
+  verifyCompleteDocumentSale(id: ID!): Boolean
+  canceledCompletedDocumentSale(id: ID!): Boolean
 }
 
 type Document {
@@ -20,6 +21,14 @@ type Document {
   code: String
   type: EnumTypeDocument
   state: EnumStateDocument
-
+  createdAt: Float
+  createdBy: Account
+  verifiedAt: Float
+  verifiedBy: Account
+  ##
+  total: Float
   srcVendor: Vendor
+  sTransactions: [STransaction]
+  desCompany: Company
+  desCustomer: Customer
 }

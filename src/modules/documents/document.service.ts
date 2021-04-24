@@ -1,19 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Document as DocumentGraphql } from '../../graphql.schema';
 import { Document, DocumentDocument } from 'src/schemas/document.schema';
 import { Model } from 'mongoose';
-import { v4 } from 'uuid';
-import moment from 'moment';
-import { ApolloError } from 'apollo-server-errors';
-import { CommonService } from 'src/commons/commonService'
+import * as moment from 'moment';
 import { EnumStateDocument } from '../../schemas/interface'
 
 @Injectable()
 export class DocumentService {
   constructor(
-    @InjectModel(Document.name) private documentModel: Model<DocumentDocument>,
-    private readonly commonService: CommonService
+    @InjectModel(Document.name) private documentModel: Model<DocumentDocument>
   ) {}
 
   async findAll({ type }): Promise<any[]> {
@@ -24,33 +19,33 @@ export class DocumentService {
     return dataDoc
   }
 
-  async findOneById(id): Promise<any> {
+  async findOneById(id): Promise<Document> {
     return this.documentModel.findOne({
       _id: id
     }).exec();
   }
 
-  async findAllOneByCondition(objFind): Promise<any> {
-    return this.documentModel.find(objFind).exec();
+  async findAllByCondition(objFind, createdAt = -1): Promise<any> {
+    return this.documentModel.find(objFind, null, { sort: { createdAt } }).exec();
   }
 
-  async createOne({ info }, { currentUser }): Promise<DocumentGraphql> {
-    const { code } = await this.commonService.generateCodeAdapterCompany(
-      info.idDesCompany,
-      'NK',
-      'indexImportDocument'
-    )
-    const newData = {
-      _id: v4(),
-      code,
-      ...info,
-      createdAt: moment().valueOf(),
-      createdBy: {
-        _id: currentUser._id,
-        username: currentUser.username
-      }
-    }
+  async createOne(newData): Promise<any> {
     await this.documentModel.create(newData);
     return newData
+  }
+  async updateOneByCondition(objFind, objUpdate, { currentUser }) {
+    const dataUpdate = await this.documentModel.findOneAndUpdate(objFind, {
+      $set: {
+        ...objUpdate,
+        updatedAt: moment().valueOf(),
+        updatedBy: {
+          _id: currentUser._id,
+          username: currentUser.username
+        }
+      }
+    }, {
+      new: true
+    })
+    return dataUpdate
   }
 }

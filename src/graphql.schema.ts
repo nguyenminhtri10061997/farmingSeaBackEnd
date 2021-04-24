@@ -43,7 +43,7 @@ export abstract class IQuery {
 
     abstract searchCustomers(searchString: string, limit?: number, idDefault?: string): Customer[] | Promise<Customer[]>;
 
-    abstract documents(type?: EnumTypeDocument, startDate?: number, endDate?: number, idDesCompany?: string): Document[] | Promise<Document[]>;
+    abstract documents(type?: EnumTypeDocument, startDate?: number, endDate?: number, idSourceCompany?: string, state?: EnumStateDocument): Document[] | Promise<Document[]>;
 
     abstract document(id: string): Document | Promise<Document>;
 
@@ -51,9 +51,17 @@ export abstract class IQuery {
 
     abstract getMe(): User | Promise<User>;
 
+    abstract stocks(idSourceCompany?: string): Stock[] | Promise<Stock[]>;
+
+    abstract stock(id: string): Stock | Promise<Stock>;
+
     abstract stockModels(): StockModel[] | Promise<StockModel[]>;
 
     abstract stockModel(id: string): StockModel | Promise<StockModel>;
+
+    abstract searchStockModels(searchString: string, limit?: number, idDefault?: string, idCompany?: string): StockModel[] | Promise<StockModel[]>;
+
+    abstract getSTransactionByIdDocument(idDocument: string): STransaction[] | Promise<STransaction[]>;
 
     abstract users(): User[] | Promise<User[]>;
 
@@ -83,19 +91,27 @@ export abstract class IMutation {
 
     abstract createDocument(info?: infoScalar): Document | Promise<Document>;
 
-    abstract updateDocument(id: string, info?: infoScalar): Document | Promise<Document>;
+    abstract createDocumentSale(info?: infoScalar): Document | Promise<Document>;
 
     abstract verifyCompleteDocument(id: string): boolean | Promise<boolean>;
 
-    abstract canceledCompleteDocument(id: string): boolean | Promise<boolean>;
-
     abstract canceledDocument(id: string): boolean | Promise<boolean>;
+
+    abstract verifyCompleteDocumentSale(id: string): boolean | Promise<boolean>;
+
+    abstract canceledCompletedDocumentSale(id: string): boolean | Promise<boolean>;
 
     abstract createStockModel(info?: infoScalar): StockModel | Promise<StockModel>;
 
     abstract updateStockModel(id: string, info?: infoScalar): StockModel | Promise<StockModel>;
 
     abstract deleteStockModels(ids?: string[]): boolean | Promise<boolean>;
+
+    abstract createSTransaction(info: infoScalar): STransaction | Promise<STransaction>;
+
+    abstract updateSTransaction(id: string, info: infoScalar): STransaction | Promise<STransaction>;
+
+    abstract deleteSTransactions(ids: string[]): boolean | Promise<boolean>;
 
     abstract createUser(info?: InputUser): User | Promise<User>;
 
@@ -149,7 +165,29 @@ export class Document {
     code?: string;
     type?: EnumTypeDocument;
     state?: EnumStateDocument;
+    createdAt?: number;
+    createdBy?: Account;
+    verifiedAt?: number;
+    verifiedBy?: Account;
+    total?: number;
     srcVendor?: Vendor;
+    sTransactions?: STransaction[];
+    desCompany?: Company;
+    desCustomer?: Customer;
+}
+
+export class Account {
+    _id?: string;
+    username?: string;
+}
+
+export class Stock {
+    _id?: string;
+    idStockModel?: string;
+    idCompany?: string;
+    quantity?: number[];
+    count?: number;
+    stockModel?: StockModel;
 }
 
 export class StockModel {
@@ -158,12 +196,32 @@ export class StockModel {
     name?: string;
     unsignedName?: string;
     detail?: DetailStockModel;
+    countByStore?: number;
 }
 
 export class DetailStockModel {
     unit?: string[];
     factor?: number[];
+    realFactor?: number[];
     buyPrice?: number;
+    costPrice?: number;
+}
+
+export class STransaction {
+    _id?: string;
+    idDocument?: string;
+    idStockModel?: string;
+    idStock?: string;
+    quantity?: number[];
+    buyPrice?: number[];
+    salePrice?: number[];
+    costPrice?: number;
+    count?: number;
+    createdAt?: number;
+    createdBy?: Account;
+    verifiedAt?: number;
+    verifiedBy?: Account;
+    stockModel?: StockModel;
 }
 
 export class User {

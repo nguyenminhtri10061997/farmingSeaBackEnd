@@ -1,6 +1,7 @@
 type Query {
   stockModels: [StockModel]
   stockModel(id: ID!): StockModel
+  searchStockModels(searchString: String!, limit: Int, idDefault: ID, idCompany: ID): [StockModel]
 }
 
 type Mutation {
@@ -15,10 +16,15 @@ type StockModel {
   name: String
   unsignedName: String
   detail: DetailStockModel
+
+  ##
+  countByStore: Int
 }
 
 type DetailStockModel {
   unit: [String]
   factor: [Float]
+  realFactor: [Float]
   buyPrice: Float
+  costPrice: Float
 }

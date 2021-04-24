@@ -9,5 +9,9 @@ import { Company, CompanySchema } from 'src/schemas/company.schema';
 @Module({
   imports: [MongooseModule.forFeature([{ name: Company.name, schema: CompanySchema }])],
   providers: [CompanyService, CompanyResolver],
+  exports: [
+    CompanyModule,
+    CompanyService
+  ]
 })
 export class CompanyModule {}

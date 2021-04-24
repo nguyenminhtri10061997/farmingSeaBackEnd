@@ -32,6 +32,9 @@ export class Company {
   @Prop()
   indexImportDocument: number;
 
+  @Prop()
+  indexSaleDocument: number;
+
   @Prop(raw({
     _id: { type: String },
     username: { type: String }

@@ -4,7 +4,7 @@ import { Company as CompanyGraphql } from '../../graphql.schema';
 import { Company, CompanyDocument } from 'src/schemas/company.schema';
 import { Model } from 'mongoose';
 import { v4 } from 'uuid';
-import moment from 'moment';
+import * as moment from 'moment';
 import { ApolloError } from 'apollo-server-errors';
 import { toUnsignedName } from 'src/commons/commonFunc';
 

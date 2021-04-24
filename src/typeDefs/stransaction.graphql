@@ -1,0 +1,28 @@
+type Query {
+  getSTransactionByIdDocument(idDocument: ID!): [STransaction]
+}
+
+type Mutation {
+  createSTransaction(info: infoScalar!): STransaction
+  updateSTransaction(id: ID!, info: infoScalar!): STransaction
+  deleteSTransactions(ids: [ID]!): Boolean
+}
+
+type STransaction {
+  _id: ID
+  idDocument: ID
+  idStockModel: ID
+  idStock: ID
+  quantity: [Float]
+  buyPrice: [Float]
+  salePrice: [Float]
+  costPrice: Float
+  count: Int
+
+  createdAt: Float
+  createdBy: Account
+  verifiedAt: Float
+  verifiedBy: Account
+
+  stockModel: StockModel
+}
